@@ -147,7 +147,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   settings:
     testSettings: {fileID: 0}
-    renderPipeline: {fileID: 0}
     platformMask: -1
     waitType: 0
     waitFrames: 0
@@ -155,14 +154,13 @@ MonoBehaviour:
     passFailThreshold: 0.1
   m_Settings:
     testSettings: {fileID: 0}
-    renderPipeline: {fileID: 0}
     platformMask: -1
     waitType: 0
     waitFrames: 5
     waitSeconds: 0
     passFailThreshold: 0.1
     captureCamera: {fileID: 20109210616973140}
-    frameResolution: 1
+    frameResolution: 2
     textureFormat: 3
     filterMode: 1
     useBackBuffer: 0
