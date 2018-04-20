@@ -16,6 +16,8 @@ public class DebugViewController : MonoBehaviour
     [Header("Rendering")]
     [SerializeField] int fullScreenDebugMode = 0;
 
+    [SerializeField] int waitForFrames = 2;
+
     [ContextMenu("Set Debug View")]
     public void SetDebugView()
     {
@@ -32,5 +34,13 @@ public class DebugViewController : MonoBehaviour
                 hdPipeline.debugDisplaySettings.fullScreenDebugMode = (FullScreenDebugMode) fullScreenDebugMode;
                 break;
         }
+    }
+
+    IEnumerator Start()
+    {
+        for (int i=0 ; i<waitForFrames ; ++i)
+            yield return null;
+
+        SetDebugView();
     }
 }

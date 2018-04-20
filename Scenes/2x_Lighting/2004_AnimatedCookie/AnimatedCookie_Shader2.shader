@@ -8,6 +8,8 @@ Shader "HDRenderPipeline/GraphicTests/2004_AnimatedCookie_AnimMat2"
         _rainbowValues("Rainbow: speed, frequency, amplitude, scale", vector) = (10, 5, 0.05, 0.8)
 
         _StarSize ("Star Size", float) = 0.2
+
+        _MyTime("My Time", float) = 0
     }
 
         SubShader
@@ -36,6 +38,8 @@ Shader "HDRenderPipeline/GraphicTests/2004_AnimatedCookie_AnimMat2"
             float4 _rainbowValues;
 
             float _StarSize;
+
+            float _MyTime;
 
             static const int _StarsAnim[STAR_ARRSIZE] = {
                 0, 0, 0, 0, 0, 0, 0,
@@ -82,7 +86,7 @@ Shader "HDRenderPipeline/GraphicTests/2004_AnimatedCookie_AnimMat2"
 
                 uv.x /= 6.0;
 
-                uv.x += floor(-(-_Time.y * _Speed ) % 6) / 6.0;
+                uv.x += floor(-(-_MyTime * _Speed ) % 6) / 6.0;
 
                 float4 nyan = tex2D(_Nyan, uv);
 
@@ -93,7 +97,7 @@ Shader "HDRenderPipeline/GraphicTests/2004_AnimatedCookie_AnimMat2"
             {
                 uv.y *= 36.0 / 21.0;
 
-                uv.y += sin(_Time.y * _rainbowValues.x + uv.x * _rainbowValues.y) * _rainbowValues.z;
+                uv.y += sin(_MyTime * _rainbowValues.x + uv.x * _rainbowValues.y) * _rainbowValues.z;
 
                 uv.y = uv.y / _rainbowValues.w - ( 1 - _rainbowValues.w );
 
@@ -147,12 +151,12 @@ Shader "HDRenderPipeline/GraphicTests/2004_AnimatedCookie_AnimMat2"
 
                         starUV.y -= ((s*36598.214563*(l+1)) % 7.0);
 
-                        starUV.x += _Time.y * (1+(l*0.5)) * 3;
+                        starUV.x += _MyTime * (1+(l*0.5)) * 3;
                         starUV.x = starUV.x % 5;
 
                         starUV *= 1 - l * 0.1;
 
-                        DrawStar(starUV, (_Time.y+s/7.0+l/6.0) * 5, c.rgb);
+                        DrawStar(starUV, (_MyTime+s/7.0+l/6.0) * 5, c.rgb);
                     }
                 }
 
