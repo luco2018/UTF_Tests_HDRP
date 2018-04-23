@@ -13,11 +13,12 @@ public class GenerateTestSuites
 	private static void GenerateSRPTestSuites()
 	{
 		// ---------- HDRP ----------
-
 		string[] scenesGUIDs = AssetDatabase.FindAssets("t:Scene", new string[]{hdrp_TestsFolder});
+		//Debug.Log("Found "+scenesGUIDs.Length+" scene(s) in "+hdrp_TestsFolder);
 
 		// Find the different RP assets sub folders
 		string[] subFolders = AssetDatabase.GetSubFolders(hdrp_PipelinesFolder);
+		//Debug.Log("Found "+subFolders.Length+" HDRP assets folders in "+hdrp_PipelinesFolder+" .");
 
 		foreach (string subFolder in subFolders)
 		{
@@ -32,6 +33,7 @@ public class GenerateTestSuites
 			for ( int i=0 ; i<hdrp_PipelineAssets.Length ; ++i)
 			{
 				hdrp_PipelineAssets[i] = AssetDatabase.LoadAssetAtPath<UnityEngine.Experimental.Rendering.HDPipeline.HDRenderPipelineAsset>( AssetDatabase.GUIDToAssetPath(hdrp_PipelineAssetsGUIDs[i]));
+				//Debug.Log("Found RP asset: "+hdrp_PipelineAssets[i]);
 			}
 
 			GenerateTestSuiteFromScenes( hdrp_SuitesFolder , "HDRP_"+subFolderName, scenesGUIDs, hdrp_PipelineAssets);
@@ -52,15 +54,18 @@ public class GenerateTestSuites
 		1 << (int) RuntimePlatform.XboxOne ;
 	
 	public static readonly string srp_RootPath = Path.GetDirectoryName( AssetDatabase.GUIDToAssetPath( AssetDatabase.FindAssets("SRPMARKER")[0] ) );
+	public static readonly string utfCore_RootPath = Path.GetDirectoryName( AssetDatabase.GUIDToAssetPath( AssetDatabase.FindAssets("UTFCOREMARKER")[0] ) );
+	public static readonly string hdrpSuites_RootPath = Path.GetDirectoryName( AssetDatabase.GUIDToAssetPath( AssetDatabase.FindAssets("HDRPSUITESMARKER")[0] ) );
+	public static readonly string hdrpTests_RootPath = Path.GetDirectoryName( AssetDatabase.GUIDToAssetPath( AssetDatabase.FindAssets("HDRPTESTSMARKER")[0] ) );
 
-	public static string GetPathInSRP( string[] foldersPath )
+	public static string CombinePath( string origin , params string[] foldersPath )
 	{
-		return foldersPath.Aggregate( srp_RootPath, Path.Combine );
+		return foldersPath.Aggregate( origin, Path.Combine );
 	}
 
-	public static readonly string hdrp_TestsFolder = GetPathInSRP( new string[]{ "Tests", "UTF_Tests_HDRP", "Scenes" } );
-	public static readonly string hdrp_PipelinesFolder = GetPathInSRP( new string[] { "Tests", "UTF_Tests_HDRP", "Common", "RP_Assets" } );
-	public static readonly string hdrp_SuitesFolder = GetPathInSRP( new string[] {"Tests", "UTF_Suites_HDRP" , "Resources" } );
+	public static readonly string hdrp_TestsFolder = CombinePath( hdrpTests_RootPath, "Scenes" );
+	public static readonly string hdrp_PipelinesFolder = CombinePath( hdrpTests_RootPath, "Common", "RP_Assets" );
+	public static readonly string hdrp_SuitesFolder = CombinePath( hdrpSuites_RootPath , "Resources" );
 
 	public static void GenerateTestSuiteFromScenes( string path, string name, string[] scenesGUIDs, RenderPipelineAsset[] renderPipelineAssets = null, int platforms = -1 )
 	{
@@ -95,6 +100,8 @@ public class GenerateTestSuites
 		{
 			string scenePath = AssetDatabase.GUIDToAssetPath(guid);
 			SceneAsset scene = AssetDatabase.LoadAssetAtPath<SceneAsset>( scenePath );
+
+			//Debug.Log(scene.name);
 
 			string testName = Path.GetFileName( scenePath );
 			string groupName = Path.GetFileName( Path.GetDirectoryName( scenePath ) );
