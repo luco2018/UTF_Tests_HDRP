@@ -78,6 +78,7 @@ public class GenerateTestSuites
 			if (renderPipelineAssets.Length > 0)
 				suite.defaultRenderPipeline = renderPipelineAssets[0];
 			
+			/*
 			if (renderPipelineAssets.Length > 1)
 			{
 				AlternateSettings[] alternateSettings = new AlternateSettings[renderPipelineAssets.Length-1];
@@ -92,6 +93,7 @@ public class GenerateTestSuites
 
 				suite.alternateSettings = alternateSettings;
 			}
+			*/
 		}
 		
 		Dictionary<string, Group> groups = new Dictionary<string, Group>();
